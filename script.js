@@ -1,60 +1,58 @@
-//date at the top 
-var today = moment();
-$("#currentDay").text(today.format("dddd, MMMM Do"));
+$(document).ready(function() {
+    
+    // listen for save  clicks
+    $(".saveBtn").on("click", function() {
 
-// tasks to store in local storage
-var tasks = {
-    "8": [],
-    "9": [],
-    "10": [],
-    "11": [],
-    "12": [],
-    "13": [],
-    "14": [],
-    "15": [],
-    "16": [],
-    "17": [],
-    "18": [],
-};
+      var value = $(this).siblings(".description").val();
+      var time = $(this).parent().attr("id");
+  
+      // save in localStorage
+      localStorage.setItem(time, value);
+    });
+  
+// update time
+    function hourUpdater() {
 
-//add tasks to local storage
-
-// local tasks from local storage
-
-// make sure time is correct
-
-//create tasks- corresponding based on the hour
-var createTask = function(taskText, hourDiv) {
-    var taskDiv = hourDiv.find(".task");
-    var taskP = $("<p>")
-        .addClass("description")
-        .text(taskText)
-    taskDiv.html(taskP);
-}
-
-// update tasks based on time
-
-var currentHour = moment().hour();
-$(".task-info").each( function() {
-    var whatHour = parseInt($(this).attr("id"));
-
-//  past, present, and future
-    if ( whatHour < currentHour ) {
-        $(this).removeClass(["present", "future"]).addClass("past");
+      // get current number of hours
+      var currentHour = moment().hours();
+  
+      $(".time-block").each(function() {
+        var blockHour = parseInt($(this).attr("id").split("-")[1]);
+  
+        // check if color code needs to be updated
+        if (blockHour < currentHour) {
+          $(this).addClass("past");
+        } 
+        else if (blockHour === currentHour) {
+          $(this).removeClass("past");
+          $(this).addClass("present");
+        } 
+        else {
+          $(this).removeClass("past");
+          $(this).removeClass("present");
+          $(this).addClass("future");
+        }
+      });
     }
-    else if ( whatHour === currentHour ) {
-        $(this).removeClass(["past", "future"]).addClass("present");
-    }
-    else {
-        $(this).removeClass(["past", "present"]).addClass("future");
-    }
-})
-
-// click handlers
-
-// save button
-
-// update task backgrounds at the top of the hour 
-
-// get tasks from local storage upon loading
-getTasks();
+  
+    hourUpdater();
+  
+    // check if current time needs to be updated
+    var interval = setInterval(hourUpdater, 15000);
+  
+    // load saved data from localStorage
+    $("#hour-9 .description").val(localStorage.getItem("hour-9"));
+    $("#hour-10 .description").val(localStorage.getItem("hour-10"));
+    $("#hour-11 .description").val(localStorage.getItem("hour-11"));
+    $("#hour-12 .description").val(localStorage.getItem("hour-12"));
+    $("#hour-13 .description").val(localStorage.getItem("hour-13"));
+    $("#hour-14 .description").val(localStorage.getItem("hour-14"));
+    $("#hour-15 .description").val(localStorage.getItem("hour-15"));
+    $("#hour-16 .description").val(localStorage.getItem("hour-16"));
+    $("#hour-17 .description").val(localStorage.getItem("hour-17"));
+  
+    // display current day on page
+    $("#currentDay").text(moment().format("dddd, MMMM Do"));
+  });
+ 
+  
