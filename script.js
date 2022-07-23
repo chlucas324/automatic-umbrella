@@ -16,3 +16,15 @@ var tasks = {
     "17": [],
     "18": [],
 };
+
+//create tasks- corresponding based on the hour
+var createTask = function(taskText, hourDiv) {
+    var taskDiv = hourDiv.find(".task");
+    var taskP = $("<p>")
+        .addClass("description")
+        .text(taskText)
+    taskDiv.html(taskP);
+}
+
+// get tasks from local storage upon loading
+getTasks();
